@@ -10,7 +10,7 @@ An inventory planning desk where a buyer can spot a shortage, ask when stock wil
 
 1. Select **Servo drive**. The warehouse starts with 42 units. Sales order SO-2041 commits 60, so the projected balance drops to −18 before the next delivery.
 2. Ask **Which items will run short?** Then ask **When does it arrive?** to follow up on the item with the largest shortage. Open PO-1083 to inspect the 48-unit purchase from Vector Motion.
-3. Open **Answer traces** to see the predicted intent, classifier time, ERP lookup time and request ID. The displayed p95 covers answers in the current session.
+3. Open **Observability** and select a latency bar to inspect its question, intent, routing time, ERP lookup and trace ID. **Run 6 test queries** sends real, labeled requests through the current runtime. The chart shows the latest 24 completed requests in order. The p95 covers the whole page session and measures submission through answer insertion, including the HTTP round trip in API mode.
 
 ## Implementation
 
