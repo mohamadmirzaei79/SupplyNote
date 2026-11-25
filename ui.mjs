@@ -53,7 +53,14 @@ function chart(plan){
   draw('text',{x:40,y:133,'font-size':11},dayLabel(data,0));draw('text',{x:405,y:133,'font-size':11,'text-anchor':'end'},dayLabel(data,end));
   $('plot').replaceChildren(svg);
 }
-function select(plan){$('itemtitle').textContent=plan.item.name;chart(plan);$('evidence').replaceChildren(...[plan.item.bin,...plan.events.map(o=>o.id)].map(source));for(const b of $('items').children)b.setAttribute('aria-pressed',b.dataset.sku===plan.item.sku)}
+function select(plan){
+  const item=plan.item;
+  $('partsku').textContent=item.sku+' / '+item.family;
+  $('partfacts').replaceChildren(...[['On hand',item.qty],['Peak shortage',plan.gap],['Closing balance',plan.ending]].map(([name,value])=>{const f=element('div');f.append(element('small',name),element('strong',String(value)));return f}));
+  $('schedule').replaceChildren(...plan.events.map(o=>{const b=source(o.id);b.className='orderline';b.replaceChildren(element('time',dayLabel(data,o.day)),element('span',o.id),element('b',(o.type==='purchase'?'+':'−')+o.qty));return b}));
+  if(!plan.events.length)$('schedule').textContent='No open orders for this part.';
+  $('askpart').onclick=()=>{location.hash='assistant';$('question').value='Show stock position for '+item.sku;requestAnimationFrame(()=>$('question').focus())};
+  $('itemtitle').textContent=plan.item.name;chart(plan);$('evidence').replaceChildren(...[plan.item.bin,...plan.events.map(o=>o.id)].map(source));for(const b of $('items').children)b.setAttribute('aria-pressed',b.dataset.sku===plan.item.sku)}
 async function json(url,options){const r=await fetch(url,options);if(!r.ok)throw Error('Request failed ('+r.status+')');return r.json()}
 async function ask(q,origin="Chat"){
   const form=document.querySelector('#assistant form');if(form.dataset.busy||!q.trim())return;form.dataset.busy='true';
@@ -65,7 +72,7 @@ async function ask(q,origin="Chat"){
 }
 try{
   [data,model]=await Promise.all([json(api?'./api/snapshot':'./erp.json'),api?null:json('./model.json')]);if(api)$('mode').textContent='ERP snapshot · API mode';
-  const plans=data.items.map(i=>project(data,i));$('warehouse').textContent=data.warehouse+' · Planning snapshot · '+data.asOf;
+  const plans=data.items.map(i=>project(data,i)).sort((a,b)=>b.gap-a.gap||a.item.name.localeCompare(b.item.name));$('warehouse').textContent=data.warehouse+' · Planning snapshot · '+data.asOf;
   $('gap').textContent=plans.reduce((s,r)=>s+r.gap,0);$('risk').textContent=plans.filter(p=>p.gap).length+' / '+plans.length;$('inbound').textContent=new Set(data.orders.filter(o=>o.type==='purchase').map(o=>o.id.split('/')[0])).size;
   for(const p of plans){const b=element('button'),label=element('span');label.append(element('b',p.item.name),element('span',p.item.sku+' · '+p.item.family,'code'));b.append(label,element('span',p.gap?p.gap+' short':'Covered','pill'+(p.gap?' short':'')));b.dataset.sku=p.item.sku;b.onclick=()=>select(p);$('items').append(b)}select(plans[0]);
   render();
