@@ -1,0 +1,108 @@
+{
+  "asOf": "2026-03-02",
+  "warehouse": "Central stores",
+  "items": [
+    {
+      "sku": "AX-240",
+      "name": "Servo drive",
+      "family": "Motion control",
+      "qty": 42,
+      "bin": "BIN-001"
+    },
+    {
+      "sku": "BR-118",
+      "name": "Bearing kit",
+      "family": "Assembly",
+      "qty": 75,
+      "bin": "BIN-002"
+    },
+    {
+      "sku": "CT-410",
+      "name": "Control board",
+      "family": "Electronics",
+      "qty": 26,
+      "bin": "BIN-003"
+    },
+    {
+      "sku": "VL-075",
+      "name": "Valve body",
+      "family": "Hydraulics",
+      "qty": 54,
+      "bin": "BIN-004"
+    }
+  ],
+  "orders": [
+    {
+      "id": "SO-2041",
+      "sku": "AX-240",
+      "day": 3,
+      "qty": 60,
+      "type": "sales",
+      "party": "Atlas Robotics"
+    },
+    {
+      "id": "PO-1083",
+      "sku": "AX-240",
+      "day": 6,
+      "qty": 48,
+      "type": "purchase",
+      "party": "Vector Motion"
+    },
+    {
+      "id": "SO-2047",
+      "sku": "AX-240",
+      "day": 9,
+      "qty": 16,
+      "type": "sales",
+      "party": "Atlas Robotics"
+    },
+    {
+      "id": "SO-2052",
+      "sku": "BR-118",
+      "day": 4,
+      "qty": 42,
+      "type": "sales",
+      "party": "North Assembly"
+    },
+    {
+      "id": "PO-1095",
+      "sku": "BR-118",
+      "day": 8,
+      "qty": 20,
+      "type": "purchase",
+      "party": "Axis Works"
+    },
+    {
+      "id": "SO-2060",
+      "sku": "CT-410",
+      "day": 2,
+      "qty": 36,
+      "type": "sales",
+      "party": "Orbit Controls"
+    },
+    {
+      "id": "PO-1091",
+      "sku": "CT-410",
+      "day": 5,
+      "qty": 32,
+      "type": "purchase",
+      "party": "Circuit House"
+    },
+    {
+      "id": "SO-2063",
+      "sku": "VL-075",
+      "day": 5,
+      "qty": 20,
+      "type": "sales",
+      "party": "Flow Systems"
+    },
+    {
+      "id": "PO-1102",
+      "sku": "VL-075",
+      "day": 10,
+      "qty": 24,
+      "type": "purchase",
+      "party": "Valve Supply"
+    }
+  ]
+}

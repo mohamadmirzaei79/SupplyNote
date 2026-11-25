@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {answer,project} from './engine.mjs';
+const load=n=>JSON.parse(readFileSync(new URL(n,import.meta.url)));
+const data=load('erp.json'), model=load('model.json');
+test('stock dips before replenishment and recovers',()=>{const p=project(data,data.items[0]);assert.deepEqual(p.events.map(e=>e.balance),[-18,30,14]);assert.equal(p.gap,18)});
+test('risk names the first breach and links supporting orders',()=>{const r=answer(data,model,'Which items will run short?');assert.equal(r.trace.intent,'risk');assert.ok(r.sources.includes('SO-2041'));assert.match(r.text,/18 units/);assert.equal(r.context,'AX-240')});
+test('follow-up receipt uses selected SKU',()=>{const r=answer(data,model,'When does it arrive?','AX-240');assert.deepEqual(r.sources,['PO-1083']);assert.match(r.text,/Vector Motion/)});
+test('balance and unfamiliar question',()=>{assert.equal(answer(data,model,'Show inventory balances').trace.intent,'balance');assert.equal(answer(data,model,'xyzzy').trace.intent,'unknown')});
